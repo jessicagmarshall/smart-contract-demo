@@ -12,7 +12,7 @@ If you don't have node installed, [do that next](https://nodejs.org/en/download/
 
 For these tests to run correctly, you'll need to have [Truffle v4.0.0](https://github.com/trufflesuite/truffle/releases/tag/v4.0.0) installed. Using other versions of truffle will result in solc warnings & errors. While you're at it, clone the node_modules into the repo as well. If you don't, you'll end up running into strange bluebird errors.
 
-To do all of this, run the following command in terminal:
+To do all of this, run the following command in terminal (make sure you're in the directory where you want all these files!):
 
 ```
 $ npm install -g truffle
