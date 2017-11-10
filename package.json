@@ -1,0 +1,26 @@
+{
+  "name": "dcethereummeetupdemo",
+  "version": "1.0.0",
+  "description": "The smart contract that was delivered at the DC Ethereum Meetup on November 8th, with a bonus truffle testing framework.",
+  "main": "truffle-config.js",
+  "directories": {
+    "test": "test"
+  },
+  "dependencies": {
+    "bluebird": "^3.5.1"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jessicagmarshall/SmartContractDemo.git"
+  },
+  "author": "Jessica Marshall",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/jessicagmarshall/SmartContractDemo/issues"
+  },
+  "homepage": "https://github.com/jessicagmarshall/SmartContractDemo#readme"
+}
