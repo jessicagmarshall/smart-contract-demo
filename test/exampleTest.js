@@ -2,6 +2,14 @@ const JessToken = artifacts.require('JessToken')
 const Promise = require('bluebird')
 web3.eth = Promise.promisifyAll(web3.eth)
 
+async function getRandomNumberUnder1000() {
+  return Math.floor(Math.random() * (999)) + 1;
+}
+
+async function getRandomNumberAbove1000() {
+  return Math.floor(Math.random() * (999)) + 1000;
+}
+
 contract('JessToken', (accounts) => {
   let jessica
   let jennifer
@@ -33,7 +41,7 @@ contract('JessToken', (accounts) => {
       })
 
   it('allows jessica to successfully transfer tokens she has', async function() {
-    let amount = 1
+    let amount = await getRandomNumberUnder1000()
     let tx = await jessToken.transfer(amount, jordan, {from: jessica})
     let jessBalance = await jessToken.balances.call(jessica)
     let jordanBalance = await jessToken.balances.call(jordan)
@@ -43,7 +51,11 @@ contract('JessToken', (accounts) => {
 
   it('does not allow jessica to transfer more tokens she has', async function() {
     let errorThrown = false
-    let amount = 1001
+    let amount = await getRandomNumberAbove1000()
+    let jessBalanceBefore = await jessToken.balances.call(jessica)
+    jessBalanceBefore = jessBalanceBefore.toNumber()
+    let jordanBalanceBefore = await jessToken.balances.call(jordan)
+    jordanBalanceBefore = jordanBalanceBefore.toNumber()
     try {
       await jessToken.transfer(amount, jordan, {from: jessica})
     } catch (error) {
@@ -52,13 +64,17 @@ contract('JessToken', (accounts) => {
     assert.equal(errorThrown, true, 'transfer should have thrown')
     let jessBalance = await jessToken.balances.call(jessica)
     let jordanBalance = await jessToken.balances.call(jordan)
-    assert.equal(jessBalance, 999, 'Jessica\'s token balance should not have changed')
-    assert.equal(jordanBalance, 1, 'Jordan\'s token balance should not have changed')
+    assert.equal(jessBalance, jessBalanceBefore, 'Jessica\'s token balance should not have changed')
+    assert.equal(jordanBalance, jordanBalanceBefore, 'Jordan\'s token balance should not have changed')
     })
 
   it('does not allow jennifer to transfer tokens as she she doesn\'t have any', async function() {
     let errorThrown = false
-    let amount = 10
+    let amount = await getRandomNumberAbove1000()
+    let jenBalanceBefore = await jessToken.balances.call(jennifer)
+    jenBalanceBefore = jenBalanceBefore.toNumber()
+    let jordanBalanceBefore = await jessToken.balances.call(jordan)
+    jordanBalanceBefore = jordanBalanceBefore.toNumber()
     try {
       await jessToken.transfer(amount, jordan, {from: jennifer})
     } catch (error) {
@@ -67,7 +83,7 @@ contract('JessToken', (accounts) => {
     assert.equal(errorThrown, true, 'transfer should have thrown')
     let jenBalance = await jessToken.balances.call(jennifer)
     let jordanBalance = await jessToken.balances.call(jordan)
-    assert.equal(jenBalance, 0, 'Jessica\'s token balance should not have changed')
-    assert.equal(jordanBalance, 1, 'Jordan\'s token balance should not have changed')
+    assert.equal(jenBalance, jenBalanceBefore, 'Jessica\'s token balance should not have changed')
+    assert.equal(jordanBalance, jordanBalanceBefore, 'Jordan\'s token balance should not have changed')
     })
 })
